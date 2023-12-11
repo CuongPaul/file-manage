@@ -1,31 +1,34 @@
 import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/sequelize';
 
-import { FolderEntity } from '../entities/folder.entity';
+import Folder from '../models/folder.model';
 import { CreateFolderDto } from '../dto/create-folder.dto';
 import { UpdateFolderDto } from '../dto/update-folder.dto';
-import { FolderRepository } from '../repositories/folder.repository';
 
 @Injectable()
 export class FolderService {
-	constructor(private readonly folderRepository: FolderRepository) {}
+	constructor(
+		@InjectModel(Folder)
+		private folderModel: typeof Folder,
+	) {}
 
 	create(createFolderDto: CreateFolderDto) {
-		return this.folderRepository.save(createFolderDto);
+		return this.folderModel.create({ ...createFolderDto });
 	}
 
-	findAll(): Promise<FolderEntity[]> {
-		return this.folderRepository.find();
+	findAll(): Promise<Folder[]> {
+		return this.folderModel.findAll();
 	}
 
-	findOne(id: string): Promise<FolderEntity | null> {
-		return this.folderRepository.findOneBy({ id });
+	findOne(id: string): Promise<Folder | null> {
+		return this.folderModel.findOne({ where: { id } });
 	}
 
 	update(id: string, updateUserDto: UpdateFolderDto) {
-		return this.folderRepository.update(id, updateUserDto);
+		return this.folderModel.update(updateUserDto, { where: { id } });
 	}
 
 	async remove(id: string): Promise<void> {
-		await this.folderRepository.delete(id);
+		await this.folderModel.destroy({ where: { id } });
 	}
 }
