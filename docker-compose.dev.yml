@@ -1,20 +1,20 @@
 version: '3.8'
 
 services:
-  # postgres:
-  #   image: postgres:16-alpine
-  #   container_name: file-manage-db
-  #   environment:
-  #     - POSTGRES_USER=${POSTGRES_USERNAME}
-  #     - POSTGRES_DB=${POSTGRES_DATABASE_NAME}
-  #     - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-  #   ports:
-  #     - ${DATABASE_PORT}:${DATABASE_PORT}
-  #   networks:
-  #     - goals-net
-  #   volumes:
-  #     - .docker/db/postgresql:/var/lib/postgresql/data
-  #   restart: always
+  postgres:
+    image: postgres:16-alpine
+    container_name: file-manage-db
+    environment:
+      - POSTGRES_USER=${POSTGRES_USERNAME}
+      - POSTGRES_DB=${POSTGRES_DATABASE_NAME}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    ports:
+      - ${DATABASE_PORT}:${DATABASE_PORT}
+    networks:
+      - goals-net
+    volumes:
+      - .docker/db/postgresql:/var/lib/postgresql/data
+    restart: always
 
   file-manage:
     image: file-manage:latest
@@ -32,4 +32,4 @@ services:
     restart: unless-stopped
 
 networks:
-    goals-net:
+  goals-net:
