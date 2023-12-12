@@ -4,6 +4,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 
 import File from '../file/models/file.model';
 import User from '../user/models/user.model';
+import Share from '../share/models/share.model';
 import Folder from '../folder/models/folder.model';
 
 @Module({})
@@ -18,7 +19,7 @@ export class PostgresModule {
 					useFactory: (configService: ConfigService) => ({
 						synchronize: true,
 						autoLoadModels: true,
-						models: [File, User, Folder],
+						models: [File, User, Share, Folder],
 						host: configService.get('DATABASE_HOST'),
 						port: configService.get('DATABASE_PORT'),
 						database: configService.get('DATABASE_NAME'),

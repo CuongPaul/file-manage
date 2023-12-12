@@ -9,6 +9,8 @@ import {
 	AllowNull,
 } from 'sequelize-typescript';
 
+import File from '@modules/file/models/file.model';
+import Share from '@modules/share/models/share.model';
 import Folder from '@modules/folder/models/folder.model';
 
 @Table({
@@ -34,6 +36,24 @@ export default class User extends Model {
 	@Column({ type: DataType.STRING })
 	password: string;
 
-	@HasMany(() => Folder, { onDelete: 'CASCADE' })
+	@HasMany(() => Folder, {
+		sourceKey: 'id',
+		onDelete: 'CASCADE',
+		foreignKey: 'user_id',
+	})
 	folders: Folder[];
+
+	@HasMany(() => File, {
+		sourceKey: 'id',
+		onDelete: 'CASCADE',
+		foreignKey: 'user_id',
+	})
+	files: File[];
+
+	@HasMany(() => Share, {
+		sourceKey: 'id',
+		onDelete: 'CASCADE',
+		foreignKey: 'user_id',
+	})
+	shares: Share[];
 }

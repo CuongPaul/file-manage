@@ -3,14 +3,17 @@ import {
 	Table,
 	Column,
 	Default,
+	HasMany,
 	DataType,
-	BelongsTo,
 	AllowNull,
+	BelongsTo,
 	ForeignKey,
 	PrimaryKey,
 } from 'sequelize-typescript';
 
+import File from '@modules/file/models/file.model';
 import User from '@modules/user/models/user.model';
+import Share from '@modules/share/models/share.model';
 
 @Table({
 	tableName: 'folder',
@@ -28,7 +31,7 @@ export default class Folder extends Model {
 
 	@AllowNull(false)
 	@Column({ type: DataType.STRING })
-	name: boolean;
+	name: string;
 
 	@AllowNull(false)
 	@ForeignKey(() => User)
@@ -37,4 +40,18 @@ export default class Folder extends Model {
 
 	@BelongsTo(() => User)
 	user: User;
+
+	@HasMany(() => File, {
+		sourceKey: 'id',
+		onDelete: 'CASCADE',
+		foreignKey: 'folder_id',
+	})
+	files: File[];
+
+	@HasMany(() => Share, {
+		sourceKey: 'id',
+		onDelete: 'CASCADE',
+		foreignKey: 'item_id',
+	})
+	shares: Share[];
 }

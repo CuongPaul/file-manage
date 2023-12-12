@@ -3,7 +3,6 @@ import {
 	Table,
 	Column,
 	Default,
-	HasMany,
 	DataType,
 	AllowNull,
 	BelongsTo,
@@ -12,42 +11,42 @@ import {
 } from 'sequelize-typescript';
 
 import User from '@modules/user/models/user.model';
-import Share from '@modules/share/models/share.model';
+import File from '@modules/file/models/file.model';
 import Folder from '@modules/folder/models/folder.model';
+import { ShareType, SharePermissions } from '../constants/permissions.enum';
 
 @Table({
-	tableName: 'file',
+	tableName: 'share',
 	createdAt: 'created_at',
 	updatedAt: 'updated_at',
 })
-export default class File extends Model {
+export default class Share extends Model {
 	@PrimaryKey
 	@Default(DataType.UUIDV4)
 	@Column({ type: DataType.UUID })
 	id: string;
 
-	@Column({ type: DataType.INTEGER })
-	size: number;
-
+	@AllowNull(false)
+	@ForeignKey(() => File)
 	@ForeignKey(() => Folder)
 	@Column({ type: DataType.UUID })
-	folder_id: string;
-
-	@AllowNull(false)
-	@Column({ type: DataType.STRING })
-	url: string;
-
-	@AllowNull(false)
-	@Column({ type: DataType.STRING })
-	name: string;
-
-	@AllowNull(false)
-	@Column({ type: DataType.STRING })
-	type: string;
+	item_id: string;
 
 	@ForeignKey(() => User)
 	@Column({ type: DataType.UUID })
 	user_id: string;
+
+	@AllowNull(false)
+	@Column({ type: DataType.UUID })
+	consumer_id: string;
+
+	@AllowNull(false)
+	@Column({ type: DataType.STRING })
+	item_type: ShareType;
+
+	@AllowNull(false)
+	@Column({ type: DataType.ARRAY(DataType.STRING) })
+	permissions: SharePermissions[];
 
 	@BelongsTo(() => User)
 	user: User;
@@ -55,10 +54,6 @@ export default class File extends Model {
 	@BelongsTo(() => Folder)
 	folder: Folder;
 
-	@HasMany(() => Share, {
-		sourceKey: 'id',
-		onDelete: 'CASCADE',
-		foreignKey: 'item_id',
-	})
-	shares: Share[];
+	@BelongsTo(() => File)
+	file: File;
 }
