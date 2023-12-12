@@ -2,7 +2,8 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { Module, DynamicModule } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
-import User from '../user/models/user.models';
+import File from '../file/models/file.model';
+import User from '../user/models/user.model';
 import Folder from '../folder/models/folder.model';
 
 @Module({})
@@ -15,7 +16,9 @@ export class PostgresModule {
 					imports: [ConfigModule],
 					inject: [ConfigService],
 					useFactory: (configService: ConfigService) => ({
-						models: [User, Folder],
+						synchronize: true,
+						autoLoadModels: true,
+						models: [File, User, Folder],
 						host: configService.get('DATABASE_HOST'),
 						port: configService.get('DATABASE_PORT'),
 						database: configService.get('DATABASE_NAME'),
