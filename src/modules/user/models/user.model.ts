@@ -36,18 +36,12 @@ export default class User extends Model {
 	@Column({ type: DataType.STRING })
 	password: string;
 
-	@HasMany(() => Folder, {
-		foreignKey: 'user_id',
-	})
+	@HasMany(() => Folder, { foreignKey: 'user_id' })
 	folders: Folder[];
 
-	@HasMany(() => File, {
-		foreignKey: 'user_id',
-	})
+	@HasMany(() => File, { foreignKey: 'user_id' })
 	files: File[];
 
-	@HasMany(() => Share, {
-		foreignKey: 'user_id',
-	})
+	@HasMany(() => Share, { foreignKey: 'user_id' })
 	shares: Share[];
 }

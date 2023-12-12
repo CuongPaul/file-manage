@@ -41,13 +41,9 @@ export default class Folder extends Model {
 	@BelongsTo(() => User)
 	user: User;
 
-	@HasMany(() => File, {
-		foreignKey: 'folder_id',
-	})
+	@HasMany(() => File, { foreignKey: 'folder_id' })
 	files: File[];
 
-	@HasMany(() => Share, {
-		foreignKey: 'folder_id',
-	})
+	@HasMany(() => Share, { foreignKey: 'folder_id' })
 	shares: Share[];
 }
