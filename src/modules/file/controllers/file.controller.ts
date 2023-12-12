@@ -7,11 +7,13 @@ import {
 	Delete,
 	Controller,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 
 import { FileService } from '../services/file.service';
 import { CreateFileDto } from '../dto/create-file.dto';
 import { UpdateFileDto } from '../dto/update-file.dto';
 
+@ApiTags('File')
 @Controller('file')
 export class FileController {
 	constructor(private readonly fileService: FileService) {}

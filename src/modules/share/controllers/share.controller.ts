@@ -7,11 +7,13 @@ import {
 	Delete,
 	Controller,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 
 import { ShareService } from '../services/share.service';
 import { CreateShareDto } from '../dto/create-share.dto';
 import { UpdateShareDto } from '../dto/update-share.dto';
 
+@ApiTags('Share')
 @Controller('share')
 export class ShareController {
 	constructor(private readonly shareService: ShareService) {}

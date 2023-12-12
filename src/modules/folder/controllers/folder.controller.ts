@@ -7,11 +7,13 @@ import {
 	Delete,
 	Controller,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 
 import { FolderService } from '../services/folder.service';
 import { CreateFolderDto } from '../dto/create-folder.dto';
 import { UpdateFolderDto } from '../dto/update-folder.dto';
 
+@ApiTags('Folder')
 @Controller('folder')
 export class FolderController {
 	constructor(private readonly folderService: FolderService) {}

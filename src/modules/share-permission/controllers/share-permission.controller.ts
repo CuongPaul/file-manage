@@ -7,11 +7,13 @@ import {
 	Delete,
 	Controller,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 
 import { SharePermissionService } from '../services/share-permission.service';
 import { CreateSharePermissionDto } from '../dto/create-share-permission.dto';
 import { UpdateSharePermissionDto } from '../dto/update-share-permission.dto';
 
+@ApiTags('Share permission')
 @Controller('share-permission')
 export class SharePermissionController {
 	constructor(
