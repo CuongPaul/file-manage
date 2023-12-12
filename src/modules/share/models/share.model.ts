@@ -13,7 +13,7 @@ import {
 import User from '@modules/user/models/user.model';
 import File from '@modules/file/models/file.model';
 import Folder from '@modules/folder/models/folder.model';
-import { ShareType, SharePermissions } from '../constants/permissions.enum';
+import { SharePermissions } from '../constants/permissions.enum';
 
 @Table({
 	tableName: 'share',
@@ -26,11 +26,13 @@ export default class Share extends Model {
 	@Column({ type: DataType.UUID })
 	id: string;
 
-	@AllowNull(false)
 	@ForeignKey(() => File)
+	@Column({ type: DataType.UUID })
+	file_id: string;
+
 	@ForeignKey(() => Folder)
 	@Column({ type: DataType.UUID })
-	item_id: string;
+	folder_id: string;
 
 	@ForeignKey(() => User)
 	@Column({ type: DataType.UUID })
@@ -39,10 +41,6 @@ export default class Share extends Model {
 	@AllowNull(false)
 	@Column({ type: DataType.UUID })
 	consumer_id: string;
-
-	@AllowNull(false)
-	@Column({ type: DataType.STRING })
-	item_type: ShareType;
 
 	@AllowNull(false)
 	@Column({ type: DataType.ARRAY(DataType.STRING) })

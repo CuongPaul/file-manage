@@ -51,7 +51,7 @@ export default class Folder extends Model {
 	@HasMany(() => Share, {
 		sourceKey: 'id',
 		onDelete: 'CASCADE',
-		foreignKey: 'item_id',
+		foreignKey: 'folder_id',
 	})
 	shares: Share[];
 }

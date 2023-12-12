@@ -8,10 +8,10 @@ import Share from '../share/models/share.model';
 import Folder from '../folder/models/folder.model';
 
 @Module({})
-export class PostgresModule {
+export class DatabaseModule {
 	static register(): DynamicModule {
 		return {
-			module: PostgresModule,
+			module: DatabaseModule,
 			imports: [
 				SequelizeModule.forRootAsync({
 					imports: [ConfigModule],

@@ -6,21 +6,20 @@ import {
 	ArrayMinSize,
 } from 'class-validator';
 
-import { ShareType, SharePermissions } from '../constants/permissions.enum';
+import { SharePermissions } from '../constants/permissions.enum';
 
 export class CreateShareDto {
-	@IsNotEmpty()
-	item_id: string;
+	@IsOptional()
+	file_id: string;
+
+	@IsOptional()
+	folder_id: string;
 
 	@IsNotEmpty()
 	user_id: string;
 
 	@IsNotEmpty()
 	consumer_id: string;
-
-	@IsNotEmpty()
-	@IsEnum(ShareType)
-	item_type: ShareType;
 
 	@IsArray()
 	@IsOptional()

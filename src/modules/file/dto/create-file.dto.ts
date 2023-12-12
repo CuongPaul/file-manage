@@ -16,6 +16,5 @@ export class CreateFileDto {
 	@IsNotEmpty()
 	type: string;
 
-	@IsNotEmpty()
 	user_id: string;
 }
