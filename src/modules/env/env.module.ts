@@ -14,13 +14,12 @@ export class EnvModule {
 					expandVariables: true,
 					validationOptions: { abortEarly: false },
 					validationSchema: Joi.object({
-						POSTGRES_DATABASE_URL: Joi.string(),
 						API_PORT: Joi.number().default(4000),
 						DATABASE_HOST: Joi.string().required(),
+						DATABASE_NAME: Joi.string().required(),
 						DATABASE_PORT: Joi.number().default(5432),
-						POSTGRES_PASSWORD: Joi.string().required(),
-						POSTGRES_USERNAME: Joi.string().required(),
-						POSTGRES_DATABASE_NAME: Joi.string().required(),
+						DATABASE_PASSWORD: Joi.string().required(),
+						DATABASE_USERNAME: Joi.string().required(),
 						NODE_ENV: Joi.string()
 							.valid('test', 'staging', 'production', 'development')
 							.default('development'),

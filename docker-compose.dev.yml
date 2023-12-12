@@ -5,9 +5,9 @@ services:
     image: postgres:16-alpine
     container_name: file-manage-db
     environment:
-      - POSTGRES_USER=${POSTGRES_USERNAME}
-      - POSTGRES_DB=${POSTGRES_DATABASE_NAME}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${DATABASE_NAME}
+      - POSTGRES_USER=${DATABASE_USERNAME}
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
     ports:
       - ${DATABASE_PORT}:${DATABASE_PORT}
     networks:

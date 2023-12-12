@@ -4,8 +4,8 @@ import { AppService } from './app.service';
 import { AppController } from './app.controller';
 import { EnvModule } from './modules/env/env.module';
 import { UserModule } from '@modules/user/user.module';
-import { PostgresModule } from './modules/database/postgres.module';
 import { FolderModule } from '@modules/folder/folder.module';
+import { PostgresModule } from './modules/database/postgres.module';
 
 @Module({
 	imports: [
