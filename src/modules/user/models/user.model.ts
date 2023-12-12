@@ -37,22 +37,16 @@ export default class User extends Model {
 	password: string;
 
 	@HasMany(() => Folder, {
-		sourceKey: 'id',
-		onDelete: 'CASCADE',
 		foreignKey: 'user_id',
 	})
 	folders: Folder[];
 
 	@HasMany(() => File, {
-		sourceKey: 'id',
-		onDelete: 'CASCADE',
 		foreignKey: 'user_id',
 	})
 	files: File[];
 
 	@HasMany(() => Share, {
-		sourceKey: 'id',
-		onDelete: 'CASCADE',
 		foreignKey: 'user_id',
 	})
 	shares: Share[];

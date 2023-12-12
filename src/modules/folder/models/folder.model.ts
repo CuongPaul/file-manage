@@ -42,15 +42,11 @@ export default class Folder extends Model {
 	user: User;
 
 	@HasMany(() => File, {
-		sourceKey: 'id',
-		onDelete: 'CASCADE',
 		foreignKey: 'folder_id',
 	})
 	files: File[];
 
 	@HasMany(() => Share, {
-		sourceKey: 'id',
-		onDelete: 'CASCADE',
 		foreignKey: 'folder_id',
 	})
 	shares: Share[];

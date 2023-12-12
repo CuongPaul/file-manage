@@ -56,8 +56,6 @@ export default class File extends Model {
 	folder: Folder;
 
 	@HasMany(() => Share, {
-		sourceKey: 'id',
-		onDelete: 'CASCADE',
 		foreignKey: 'file_id',
 	})
 	shares: Share[];
