@@ -1,15 +1,14 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { SequelizeModule } from '@nestjs/sequelize';
 
-import { FolderEntity } from './entities/folder.entity';
+import Folder from './models/folder.model';
 import { FolderService } from './services/folder.service';
 import { FolderController } from './controllers/folder.controller';
-import { FolderRepository } from './repositories/folder.repository';
 
 @Module({
-	imports: [TypeOrmModule.forFeature([FolderEntity])],
+	imports: [SequelizeModule.forFeature([Folder])],
 	controllers: [FolderController],
-	providers: [FolderService, FolderRepository],
-	exports: [TypeOrmModule],
+	providers: [FolderService],
+	exports: [SequelizeModule],
 })
 export class FolderModule {}
