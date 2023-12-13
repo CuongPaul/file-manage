@@ -12,8 +12,14 @@ export class FileService {
 		private fileModel: typeof File,
 	) {}
 
-	create(url: string, createFileDto: CreateFileDto) {
-		return this.fileModel.create({ ...createFileDto, url });
+	create(
+		url: string,
+		size: number,
+		name: string,
+		type: string,
+		createFileDto: CreateFileDto,
+	) {
+		return this.fileModel.create({ url, size, name, type, ...createFileDto });
 	}
 
 	findAll(): Promise<File[]> {
