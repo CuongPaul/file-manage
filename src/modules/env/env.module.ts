@@ -7,6 +7,8 @@ export class EnvModule {
 	static register(): DynamicModule {
 		return {
 			module: EnvModule,
+			exports: [ConfigService],
+			providers: [ConfigService],
 			imports: [
 				ConfigModule.forRoot({
 					cache: true,
@@ -31,8 +33,6 @@ export class EnvModule {
 						process.env.NODE_ENV === 'development' ? '.env.dev' : '.env',
 				}),
 			],
-			providers: [ConfigService],
-			exports: [ConfigService],
 		};
 	}
 }

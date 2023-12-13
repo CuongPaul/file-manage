@@ -12,6 +12,8 @@ export class DatabaseModule {
 	static register(): DynamicModule {
 		return {
 			module: DatabaseModule,
+			exports: [ConfigService],
+			providers: [ConfigService],
 			imports: [
 				SequelizeModule.forRootAsync({
 					imports: [ConfigModule],
@@ -29,8 +31,6 @@ export class DatabaseModule {
 					}),
 				}),
 			],
-			providers: [ConfigService],
-			exports: [ConfigService],
 		};
 	}
 }

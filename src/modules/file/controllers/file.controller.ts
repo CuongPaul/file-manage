@@ -11,11 +11,10 @@ import {
 } from '@nestjs/common';
 import { diskStorage } from 'multer';
 import { ApiTags } from '@nestjs/swagger';
-// import { ConfigService } from '@nestjs/config';
 import { FileInterceptor } from '@nestjs/platform-express';
 
-import { FileService } from '../services/file.service';
 import { CreateFileDto } from '../dto/create-file.dto';
+import { FileService } from '../services/file.service';
 import { UpdateFileDto } from '../dto/update-file.dto';
 // import { S3Service } from '@modules/s3/services/s3.service';
 
@@ -25,7 +24,6 @@ export class FileController {
 	constructor(
 		// private readonly s3Service: S3Service,
 		private readonly fileService: FileService,
-		// private readonly configService: ConfigService,
 	) {}
 
 	@Post()
@@ -43,7 +41,6 @@ export class FileController {
 	) {
 		// const fileUrl = await this.s3Service.uploadFile(
 		// 	`common/${fileUpload.originalname}`,
-		// 	this.configService.get('AWS_S3_BUCKET_NAME'),
 		// 	fileUpload,
 		// );
 
