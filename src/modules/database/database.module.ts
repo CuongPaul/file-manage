@@ -6,7 +6,6 @@ import File from '../file/models/file.model';
 import User from '../user/models/user.model';
 import Share from '../share/models/share.model';
 import Folder from '../folder/models/folder.model';
-import SharePermission from '../share-permission/models/share-permission.model';
 
 @Module({})
 export class DatabaseModule {
@@ -20,13 +19,13 @@ export class DatabaseModule {
 					useFactory: (configService: ConfigService) => ({
 						synchronize: true,
 						autoLoadModels: true,
+						models: [File, User, Share, Folder],
 						host: configService.get('DATABASE_HOST'),
 						port: configService.get('DATABASE_PORT'),
 						database: configService.get('DATABASE_NAME'),
 						dialect: configService.get('DATABASE_DIALECT'),
 						password: configService.get('DATABASE_PASSWORD'),
 						username: configService.get('DATABASE_USERNAME'),
-						models: [File, User, Share, Folder, SharePermission],
 					}),
 				}),
 			],

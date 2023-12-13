@@ -3,7 +3,6 @@ import {
 	Table,
 	Column,
 	Default,
-	HasMany,
 	DataType,
 	AllowNull,
 	BelongsTo,
@@ -14,7 +13,7 @@ import {
 import User from '@modules/user/models/user.model';
 import File from '@modules/file/models/file.model';
 import Folder from '@modules/folder/models/folder.model';
-import SharePermission from '@modules/share-permission/models/share-permission.model';
+import { Permission } from '@modules/share/constants/permissions.enum';
 
 @Table({
 	tableName: 'share',
@@ -31,18 +30,21 @@ export default class Share extends Model {
 	@Column({ type: DataType.UUID })
 	file_id: string;
 
-	@ForeignKey(() => Folder)
-	@Column({ type: DataType.UUID })
-	folder_id: string;
-
-	@AllowNull(false)
 	@ForeignKey(() => User)
 	@Column({ type: DataType.UUID })
 	user_id: string;
 
-	@AllowNull(false)
+	@ForeignKey(() => Folder)
+	@Column({ type: DataType.UUID })
+	folder_id: string;
+
+	@ForeignKey(() => User)
 	@Column({ type: DataType.UUID })
 	consumer_id: string;
+
+	@AllowNull(false)
+	@Column({ type: DataType.ARRAY(DataType.STRING) })
+	permissions: Permission[];
 
 	@BelongsTo(() => User)
 	user: User;
@@ -52,7 +54,4 @@ export default class Share extends Model {
 
 	@BelongsTo(() => File)
 	file: File;
-
-	@HasMany(() => SharePermission, { foreignKey: 'share_id' })
-	share_permissions: SharePermission[];
 }

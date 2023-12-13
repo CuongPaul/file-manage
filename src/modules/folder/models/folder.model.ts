@@ -26,6 +26,11 @@ export default class Folder extends Model {
 	@Column({ type: DataType.UUID })
 	id: string;
 
+	@ForeignKey(() => User)
+	@Column({ type: DataType.UUID })
+	user_id: string;
+
+	@ForeignKey(() => User)
 	@Column({ type: DataType.UUID })
 	parent_folder_id: string;
 
@@ -33,17 +38,12 @@ export default class Folder extends Model {
 	@Column({ type: DataType.STRING })
 	name: string;
 
-	@AllowNull(false)
-	@ForeignKey(() => User)
-	@Column({ type: DataType.UUID })
-	user_id: string;
-
 	@BelongsTo(() => User)
 	user: User;
 
-	@HasMany(() => File, { foreignKey: 'folder_id' })
+	@HasMany(() => File, { onDelete: 'SET NULL', foreignKey: 'folder_id' })
 	files: File[];
 
-	@HasMany(() => Share, { foreignKey: 'folder_id' })
+	@HasMany(() => Share, { onDelete: 'SET NULL', foreignKey: 'folder_id' })
 	shares: Share[];
 }

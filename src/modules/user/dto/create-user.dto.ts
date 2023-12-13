@@ -8,7 +8,6 @@ import {
 export class CreateUserDto {
 	@IsEmail()
 	@IsNotEmpty()
-	@MaxLength(50)
 	email: string;
 
 	@IsNotEmpty()

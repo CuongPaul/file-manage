@@ -29,6 +29,16 @@ export default class File extends Model {
 	@Column({ type: DataType.INTEGER })
 	size: number;
 
+	@Column({ type: DataType.STRING })
+	name: string;
+
+	@Column({ type: DataType.STRING })
+	type: string;
+
+	@ForeignKey(() => User)
+	@Column({ type: DataType.UUID })
+	user_id: string;
+
 	@ForeignKey(() => Folder)
 	@Column({ type: DataType.UUID })
 	folder_id: string;
@@ -37,24 +47,12 @@ export default class File extends Model {
 	@Column({ type: DataType.STRING })
 	url: string;
 
-	@AllowNull(false)
-	@Column({ type: DataType.STRING })
-	name: string;
-
-	@AllowNull(false)
-	@Column({ type: DataType.STRING })
-	type: string;
-
-	@ForeignKey(() => User)
-	@Column({ type: DataType.UUID })
-	user_id: string;
-
 	@BelongsTo(() => User)
 	user: User;
 
 	@BelongsTo(() => Folder)
 	folder: Folder;
 
-	@HasMany(() => Share, { foreignKey: 'file_id' })
+	@HasMany(() => Share, { onDelete: 'SET NULL', foreignKey: 'file_id' })
 	shares: Share[];
 }

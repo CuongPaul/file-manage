@@ -26,22 +26,22 @@ export default class User extends Model {
 
 	@AllowNull(false)
 	@Column({ type: DataType.STRING })
-	username: string;
-
-	@AllowNull(false)
-	@Column({ type: DataType.STRING })
 	email: string;
 
 	@AllowNull(false)
 	@Column({ type: DataType.STRING })
 	password: string;
 
-	@HasMany(() => Folder, { foreignKey: 'user_id' })
+	@AllowNull(false)
+	@Column({ type: DataType.STRING })
+	username: string;
+
+	@HasMany(() => Folder, { onDelete: 'SET NULL', foreignKey: 'user_id' })
 	folders: Folder[];
 
-	@HasMany(() => File, { foreignKey: 'user_id' })
+	@HasMany(() => File, { onDelete: 'SET NULL', foreignKey: 'user_id' })
 	files: File[];
 
-	@HasMany(() => Share, { foreignKey: 'user_id' })
+	@HasMany(() => Share, { onDelete: 'SET NULL', foreignKey: 'user_id' })
 	shares: Share[];
 }
