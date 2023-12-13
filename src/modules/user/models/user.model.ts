@@ -36,12 +36,12 @@ export default class User extends Model {
 	@Column({ type: DataType.STRING })
 	username: string;
 
-	@HasMany(() => Folder, { onDelete: 'SET NULL', foreignKey: 'user_id' })
+	@HasMany(() => Folder, { foreignKey: 'user_id' })
 	folders: Folder[];
 
-	@HasMany(() => File, { onDelete: 'SET NULL', foreignKey: 'user_id' })
+	@HasMany(() => File, { foreignKey: 'user_id' })
 	files: File[];
 
-	@HasMany(() => Share, { onDelete: 'SET NULL', foreignKey: 'user_id' })
+	@HasMany(() => Share, { foreignKey: 'user_id' })
 	shares: Share[];
 }
