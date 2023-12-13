@@ -12,8 +12,8 @@ export class FileService {
 		private fileModel: typeof File,
 	) {}
 
-	create(createFileDto: CreateFileDto) {
-		return this.fileModel.create({ ...createFileDto });
+	create(url: string, createFileDto: CreateFileDto) {
+		return this.fileModel.create({ ...createFileDto, url });
 	}
 
 	findAll(): Promise<File[]> {
