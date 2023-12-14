@@ -9,8 +9,8 @@ import { UserModule } from '@modules/user/user.module';
 import { ShareModule } from '@modules/share/share.module';
 import { FolderModule } from '@modules/folder/folder.module';
 import { DatabaseModule } from './modules/database/database.module';
-import { GlobalExceptionFilter } from '@shared/filters/global-exception.filter';
-import { TransformInterceptor } from '@shared/Interceptors/transform.interceptor';
+import { TransformInterceptor } from '@interceptors/transform.interceptor';
+import { GlobalExceptionFilter } from '@exception-filters/global-exception.filter';
 
 @Module({
 	imports: [

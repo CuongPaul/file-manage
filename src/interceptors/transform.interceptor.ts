@@ -11,6 +11,6 @@ export class TransformInterceptor implements NestInterceptor {
 	intercept(_context: ExecutionContext, next: CallHandler) {
 		return next
 			.handle()
-			.pipe(map((data) => ({ data, statusCode: 0, message: 'succe' })));
+			.pipe(map((data) => ({ data, statusCode: 0, message: 'success' })));
 	}
 }

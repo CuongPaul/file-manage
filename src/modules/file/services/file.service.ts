@@ -4,7 +4,7 @@ import { Injectable, BadRequestException } from '@nestjs/common';
 import File from '../models/file.model';
 import { CreateFileDto } from '../dto/create-file.dto';
 import { UpdateFileDto } from '../dto/update-file.dto';
-import { ERRORS_DICTIONARY } from '@shared/constants/error-dictionary.enum';
+import { ERRORS_DICTIONARY } from '@constants/error-dictionary.enum';
 
 @Injectable()
 export class FileService {

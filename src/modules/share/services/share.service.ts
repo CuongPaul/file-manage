@@ -4,7 +4,7 @@ import { Injectable, BadRequestException } from '@nestjs/common';
 import Share from '../models/share.model';
 import { CreateShareDto } from '../dto/create-share.dto';
 import { UpdateShareDto } from '../dto/update-share.dto';
-import { ERRORS_DICTIONARY } from '@shared/constants/error-dictionary.enum';
+import { ERRORS_DICTIONARY } from '@constants/error-dictionary.enum';
 
 @Injectable()
 export class ShareService {

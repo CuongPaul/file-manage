@@ -4,7 +4,7 @@ import { Injectable, BadRequestException } from '@nestjs/common';
 import Folder from '../models/folder.model';
 import { CreateFolderDto } from '../dto/create-folder.dto';
 import { UpdateFolderDto } from '../dto/update-folder.dto';
-import { ERRORS_DICTIONARY } from '@shared/constants/error-dictionary.enum';
+import { ERRORS_DICTIONARY } from '@constants/error-dictionary.enum';
 
 @Injectable()
 export class FolderService {

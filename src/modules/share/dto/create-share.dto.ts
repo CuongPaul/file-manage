@@ -7,7 +7,7 @@ import {
 	ArrayMinSize,
 } from 'class-validator';
 
-import { Permission } from '@shared/constants/permissions.enum';
+import { Permission } from '@constants/permissions.enum';
 
 export class CreateShareDto {
 	@IsOptional()

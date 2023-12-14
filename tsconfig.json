@@ -19,8 +19,11 @@
 		"noFallthroughCasesInSwitch": false,
 		"paths": {
 			"@modules/*": ["src/modules/*"],
-			"@shared/*": ["src/shared/*"],
-			"@swagger/*": ["src/swagger/*"]
+			"@swagger/*": ["src/swagger/*"],
+			"@services/*": ["src/shared/services/*"],
+			"@interceptors/*": ["src/interceptors/*"],
+			"@constants/*": ["src/shared/constants/*"],
+			"@exception-filters/*": ["src/exception-filters/*"]
 		}
 	}
 }

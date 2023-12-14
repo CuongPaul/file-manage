@@ -4,7 +4,7 @@ import { Injectable, BadRequestException } from '@nestjs/common';
 import User from '../models/user.model';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
-import { ERRORS_DICTIONARY } from '@shared/constants/error-dictionary.enum';
+import { ERRORS_DICTIONARY } from '@constants/error-dictionary.enum';
 
 @Injectable()
 export class UserService {
