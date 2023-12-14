@@ -1,9 +1,10 @@
-import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
+import { Injectable, BadRequestException } from '@nestjs/common';
 
 import User from '../models/user.model';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
+import { ERRORS_DICTIONARY } from '@shared/constants/error-dictionary.enum';
 
 @Injectable()
 export class UserService {
@@ -24,11 +25,29 @@ export class UserService {
 		return this.userModel.findOne({ where: { id } });
 	}
 
-	update(id: string, updateUserDto: UpdateUserDto) {
-		return this.userModel.update(updateUserDto, { where: { id } });
+	async update(id: string, updateUserDto: UpdateUserDto) {
+		const user = await this.userModel.findOne({ where: { id } });
+
+		if (!user) {
+			throw new BadRequestException({
+				detail: "User doesn't exist",
+				message: ERRORS_DICTIONARY.USER_NOT_FOUND,
+			});
+		}
+
+		return user.update(updateUserDto);
 	}
 
 	async remove(id: string): Promise<void> {
-		await this.userModel.destroy({ where: { id } });
+		const user = await this.userModel.findOne({ where: { id } });
+
+		if (!user) {
+			throw new BadRequestException({
+				detail: "User doesn't exist",
+				message: ERRORS_DICTIONARY.USER_NOT_FOUND,
+			});
+		}
+
+		await user.destroy();
 	}
 }

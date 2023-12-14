@@ -1,9 +1,10 @@
-import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
+import { Injectable, BadRequestException } from '@nestjs/common';
 
 import Share from '../models/share.model';
 import { CreateShareDto } from '../dto/create-share.dto';
 import { UpdateShareDto } from '../dto/update-share.dto';
+import { ERRORS_DICTIONARY } from '@shared/constants/error-dictionary.enum';
 
 @Injectable()
 export class ShareService {
@@ -24,11 +25,29 @@ export class ShareService {
 		return this.shareModel.findOne({ where: { id } });
 	}
 
-	update(id: string, updateShareDto: UpdateShareDto) {
-		return this.shareModel.update(updateShareDto, { where: { id } });
+	async update(id: string, updateShareDto: UpdateShareDto) {
+		const share = await this.shareModel.findOne({ where: { id } });
+
+		if (!share) {
+			throw new BadRequestException({
+				detail: "Share doesn't exist",
+				message: ERRORS_DICTIONARY.SHARE_NOT_FOUND,
+			});
+		}
+
+		return share.update(updateShareDto);
 	}
 
 	async remove(id: string): Promise<void> {
-		await this.shareModel.destroy({ where: { id } });
+		const share = await this.shareModel.findOne({ where: { id } });
+
+		if (!share) {
+			throw new BadRequestException({
+				detail: "Share doesn't exist",
+				message: ERRORS_DICTIONARY.SHARE_NOT_FOUND,
+			});
+		}
+
+		await share.destroy();
 	}
 }

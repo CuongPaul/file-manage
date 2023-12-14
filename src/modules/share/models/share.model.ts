@@ -13,7 +13,7 @@ import {
 import User from '@modules/user/models/user.model';
 import File from '@modules/file/models/file.model';
 import Folder from '@modules/folder/models/folder.model';
-import { Permission } from '@modules/share/constants/permissions.enum';
+import { Permission } from '@shared/constants/permissions.enum';
 
 @Table({
 	tableName: 'share',

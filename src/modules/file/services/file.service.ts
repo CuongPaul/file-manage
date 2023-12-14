@@ -1,9 +1,10 @@
-import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
+import { Injectable, BadRequestException } from '@nestjs/common';
 
 import File from '../models/file.model';
 import { CreateFileDto } from '../dto/create-file.dto';
 import { UpdateFileDto } from '../dto/update-file.dto';
+import { ERRORS_DICTIONARY } from '@shared/constants/error-dictionary.enum';
 
 @Injectable()
 export class FileService {
@@ -30,11 +31,29 @@ export class FileService {
 		return this.fileModel.findOne({ where: { id } });
 	}
 
-	update(id: string, updateUserDto: UpdateFileDto) {
-		return this.fileModel.update(updateUserDto, { where: { id } });
+	async update(id: string, updateFileDto: UpdateFileDto) {
+		const file = await this.fileModel.findOne({ where: { id } });
+
+		if (!file) {
+			throw new BadRequestException({
+				detail: "File doesn't exist",
+				message: ERRORS_DICTIONARY.FILE_NOT_FOUND,
+			});
+		}
+
+		return file.update(updateFileDto);
 	}
 
 	async remove(id: string): Promise<void> {
-		await this.fileModel.destroy({ where: { id } });
+		const file = await this.fileModel.findOne({ where: { id } });
+
+		if (!file) {
+			throw new BadRequestException({
+				detail: "File doesn't exist",
+				message: ERRORS_DICTIONARY.FILE_NOT_FOUND,
+			});
+		}
+
+		await file.destroy();
 	}
 }
