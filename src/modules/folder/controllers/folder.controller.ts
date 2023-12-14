@@ -4,11 +4,13 @@ import {
 	Body,
 	Patch,
 	Param,
+	Query,
 	Delete,
 	Controller,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
+import { QueryFoldersDto } from '../dto/get-folders.dto';
 import { FolderService } from '../services/folder.service';
 import { CreateFolderDto } from '../dto/create-folder.dto';
 import { UpdateFolderDto } from '../dto/update-folder.dto';
@@ -24,18 +26,22 @@ export class FolderController {
 	}
 
 	@Get()
-	findAll() {
-		return this.folderService.findAll();
+	findAll(@Query() queryFolders: QueryFoldersDto) {
+		return this.folderService.findAll(queryFolders);
 	}
 
 	@Get(':id')
-	findOne(@Param('id') id: string) {
-		return this.folderService.findOne(id);
+	findOne(@Param('id') id: string, @Query() query: { user_id: string }) {
+		return this.folderService.findOne(id, query.user_id);
 	}
 
 	@Patch(':id')
-	update(@Param('id') id: string, @Body() updateFolderDto: UpdateFolderDto) {
-		return this.folderService.update(id, updateFolderDto);
+	update(
+		@Param('id') id: string,
+		@Query() query: { user_id: string },
+		@Body() updateFolderDto: UpdateFolderDto,
+	) {
+		return this.folderService.update(id, query.user_id, updateFolderDto);
 	}
 
 	@Delete(':id')
