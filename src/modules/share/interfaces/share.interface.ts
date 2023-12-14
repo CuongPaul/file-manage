@@ -1,4 +1,4 @@
-import { Permission } from '../constants/permissions.enum';
+import { Permission } from '@shared/constants/permissions.enum';
 
 export interface IShare {
 	id: string;

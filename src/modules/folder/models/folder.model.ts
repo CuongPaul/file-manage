@@ -28,15 +28,16 @@ export default class Folder extends Model {
 
 	@ForeignKey(() => User)
 	@Column({ type: DataType.UUID })
-	user_id: string;
-
-	@ForeignKey(() => User)
-	@Column({ type: DataType.UUID })
 	parent_folder_id: string;
 
 	@AllowNull(false)
 	@Column({ type: DataType.STRING })
 	name: string;
+
+	@AllowNull(false)
+	@ForeignKey(() => User)
+	@Column({ type: DataType.UUID })
+	user_id: string;
 
 	@BelongsTo(() => User)
 	user: User;

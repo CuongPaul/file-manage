@@ -30,14 +30,7 @@ export default class File extends Model {
 	size: number;
 
 	@Column({ type: DataType.STRING })
-	name: string;
-
-	@Column({ type: DataType.STRING })
 	type: string;
-
-	@ForeignKey(() => User)
-	@Column({ type: DataType.UUID })
-	user_id: string;
 
 	@ForeignKey(() => Folder)
 	@Column({ type: DataType.UUID })
@@ -46,6 +39,15 @@ export default class File extends Model {
 	@AllowNull(false)
 	@Column({ type: DataType.STRING })
 	url: string;
+
+	@AllowNull(false)
+	@Column({ type: DataType.STRING })
+	name: string;
+
+	@AllowNull(false)
+	@ForeignKey(() => User)
+	@Column({ type: DataType.UUID })
+	user_id: string;
 
 	@BelongsTo(() => User)
 	user: User;

@@ -16,7 +16,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { CreateFileDto } from '../dto/create-file.dto';
 import { FileService } from '../services/file.service';
 import { UpdateFileDto } from '../dto/update-file.dto';
-// import { S3Service } from '@modules/s3/services/s3.service';
+// import { S3Service } from '@shared/services/s3.service';
 
 @ApiTags('File')
 @Controller('file')

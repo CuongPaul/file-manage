@@ -30,14 +30,16 @@ export default class Share extends Model {
 	@Column({ type: DataType.UUID })
 	file_id: string;
 
-	@ForeignKey(() => User)
-	@Column({ type: DataType.UUID })
-	user_id: string;
-
 	@ForeignKey(() => Folder)
 	@Column({ type: DataType.UUID })
 	folder_id: string;
 
+	@AllowNull(false)
+	@ForeignKey(() => User)
+	@Column({ type: DataType.UUID })
+	user_id: string;
+
+	@AllowNull(false)
 	@ForeignKey(() => User)
 	@Column({ type: DataType.UUID })
 	consumer_id: string;

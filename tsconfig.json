@@ -18,7 +18,9 @@
 		"forceConsistentCasingInFileNames": false,
 		"noFallthroughCasesInSwitch": false,
 		"paths": {
-			"@modules/*": ["src/modules/*"]
+			"@modules/*": ["src/modules/*"],
+			"@shared/*": ["src/shared/*"],
+			"@swagger/*": ["src/swagger/*"]
 		}
 	}
 }
