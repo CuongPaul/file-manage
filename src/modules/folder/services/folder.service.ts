@@ -36,8 +36,8 @@ export class FolderService {
 		return this.folderModel.findAll({ where: { ...queryFolders } });
 	}
 
-	async findOne(id: string, user_id: string) {
-		return this.folderModel.findOne({ where: { id, user_id } });
+	async findOne(id: string) {
+		return this.folderModel.findOne({ where: { id } });
 	}
 
 	async update(id: string, user_id: string, updateFolderDto: UpdateFolderDto) {

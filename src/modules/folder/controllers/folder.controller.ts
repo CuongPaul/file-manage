@@ -31,8 +31,8 @@ export class FolderController {
 	}
 
 	@Get(':id')
-	findOne(@Param('id') id: string, @Query() query: { user_id: string }) {
-		return this.folderService.findOne(id, query.user_id);
+	findOne(@Param('id') id: string) {
+		return this.folderService.findOne(id);
 	}
 
 	@Patch(':id')

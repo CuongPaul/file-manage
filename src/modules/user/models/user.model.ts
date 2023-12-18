@@ -25,7 +25,7 @@ export default class User extends Model {
 	id: string;
 
 	@AllowNull(false)
-	@Column({ type: DataType.STRING })
+	@Column({ unique: true, type: DataType.STRING })
 	email: string;
 
 	@AllowNull(false)
@@ -35,6 +35,9 @@ export default class User extends Model {
 	@AllowNull(false)
 	@Column({ type: DataType.STRING })
 	username: string;
+
+	@Column({ type: DataType.STRING })
+	refresh_token: string;
 
 	@HasMany(() => Folder, { foreignKey: 'user_id' })
 	folders: Folder[];

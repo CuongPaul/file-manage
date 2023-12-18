@@ -18,8 +18,10 @@
 		"forceConsistentCasingInFileNames": false,
 		"noFallthroughCasesInSwitch": false,
 		"paths": {
+			"@guards/*": ["src/guards/*"],
 			"@modules/*": ["src/modules/*"],
 			"@swagger/*": ["src/swagger/*"],
+			"@decorators/*": ["src/decorators/*"],
 			"@services/*": ["src/shared/services/*"],
 			"@interceptors/*": ["src/interceptors/*"],
 			"@constants/*": ["src/shared/constants/*"],

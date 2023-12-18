@@ -25,6 +25,10 @@ export class EnvModule {
 						AWS_S3_BUCKET_NAME: Joi.string().required(),
 						AWS_S3_ACCESS_KEY_ID: Joi.string().required(),
 						AWS_S3_SECRET_ACCESS_KEY: Joi.string().required(),
+						JWT_ACCESS_TOKEN_SECRET_KEY: Joi.string().required(),
+						JWT_REFRESH_TOKEN_SECRET_KEY: Joi.string().required(),
+						JWT_ACCESS_TOKEN_EXPIRATION_TIME: Joi.string().required(),
+						JWT_REFRESH_TOKEN_EXPIRATION_TIME: Joi.string().required(),
 						NODE_ENV: Joi.string()
 							.valid('test', 'staging', 'production', 'development')
 							.default('development'),
