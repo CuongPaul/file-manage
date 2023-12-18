@@ -1,3 +1,4 @@
+import { pick } from 'lodash';
 import { InjectModel } from '@nestjs/sequelize';
 import { Injectable, BadRequestException } from '@nestjs/common';
 
@@ -13,19 +14,25 @@ export class UserService {
 		private userModel: typeof User,
 	) {}
 
-	create(createUserDto: CreateUserDto) {
-		return this.userModel.create({ ...createUserDto });
+	async create(createUserDto: CreateUserDto): Promise<User> {
+		const user = await this.userModel.create({ ...createUserDto });
+
+		const data = pick(user, ['id', 'email', 'username']) as User;
+
+		return data;
 	}
 
-	findAll(): Promise<User[]> {
-		return this.userModel.findAll();
+	async findOneByCondition(condition: {
+		id?: string;
+		email?: string;
+		username?: string;
+	}): Promise<User | null> {
+		const user = await this.userModel.findOne({ where: condition });
+
+		return user;
 	}
 
-	findOne(id: string): Promise<User | null> {
-		return this.userModel.findOne({ where: { id } });
-	}
-
-	async update(id: string, updateUserDto: UpdateUserDto) {
+	async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
 		const user = await this.userModel.findOne({ where: { id } });
 
 		if (!user) {
@@ -49,5 +56,21 @@ export class UserService {
 		}
 
 		await user.destroy();
+	}
+
+	async setRefreshToken(
+		id: string,
+		hashed_refresh_token: string,
+	): Promise<void> {
+		const user = await this.userModel.findOne({ where: { id } });
+
+		if (!user) {
+			throw new BadRequestException({
+				detail: "User doesn't exist",
+				message: ERRORS_DICTIONARY.USER_NOT_FOUND,
+			});
+		}
+
+		await user.update({ refresh_token: hashed_refresh_token });
 	}
 }

@@ -4,6 +4,7 @@ import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { AppService } from './app.service';
 import { AppController } from './app.controller';
 import { EnvModule } from './modules/env/env.module';
+import { AuthModule } from '@modules/auth/auth.module';
 import { FileModule } from '@modules/file/file.module';
 import { UserModule } from '@modules/user/user.module';
 import { ShareModule } from '@modules/share/share.module';
@@ -14,6 +15,7 @@ import { GlobalExceptionFilter } from '@exception-filters/global-exception.filte
 
 @Module({
 	imports: [
+		AuthModule,
 		FileModule,
 		UserModule,
 		ShareModule,

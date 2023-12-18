@@ -39,4 +39,4 @@ $ yarn run test:cov
 
 ## Database
 
-![database](./src/public/database.png)
+![database](./src/public/images/database.png)

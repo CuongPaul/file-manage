@@ -5,6 +5,7 @@ import {
 	Patch,
 	Param,
 	Delete,
+	UseGuards,
 	Controller,
 	UploadedFile,
 	UseInterceptors,
@@ -17,9 +18,11 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { CreateFileDto } from '../dto/create-file.dto';
 import { FileService } from '../services/file.service';
 import { UpdateFileDto } from '../dto/update-file.dto';
+import { JwtAccessTokenGuard } from '@guards/jwt-access-token.guard';
 
 @ApiTags('File')
 @Controller('file')
+@UseGuards(JwtAccessTokenGuard)
 export class FileController {
 	constructor(
 		// private readonly s3Service: S3Service,
