@@ -1,4 +1,5 @@
 import {
+	Inject,
 	Injectable,
 	ConflictException,
 	NotFoundException,
@@ -6,8 +7,10 @@ import {
 } from '@nestjs/common';
 import { pick } from 'lodash';
 import * as bcrypt from 'bcryptjs';
+import { Cache } from 'cache-manager';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
 
 import { SignUpDto } from '../dto/sign-up.dto';
 import User from '@modules/user/models/user.model';
@@ -20,6 +23,8 @@ export class AuthService {
 	private SALT_ROUND = 11;
 
 	constructor(
+		@Inject(CACHE_MANAGER)
+		private cacheManager: Cache,
 		private readonly jwtService: JwtService,
 		private readonly userService: UserService,
 		private readonly configService: ConfigService,
@@ -59,6 +64,35 @@ export class AuthService {
 		return { access_token: accessToken, refresh_token: refreshToken };
 	}
 
+	async signOut({
+		userId,
+		accessToken,
+	}: {
+		userId: string;
+		accessToken: string;
+	}): Promise<void> {
+		const user = await this.userService.findOneByCondition({ id: userId });
+		if (!user) {
+			throw new BadRequestException({
+				detail: "User doesn't exist",
+				message: ERRORS_DICTIONARY.USER_NOT_FOUND,
+			});
+		}
+
+		await this.cacheManager.set(
+			`black_list_access_token:Bearer ${accessToken}`,
+			userId,
+			0,
+		);
+		await this.cacheManager.set(
+			`black_list_refresh_token:Bearer ${user.refresh_token}`,
+			userId,
+			0,
+		);
+
+		await this.userService.update(userId, { refresh_token: null });
+	}
+
 	async getUserAuthenticated({
 		email,
 		password,
@@ -81,11 +115,12 @@ export class AuthService {
 
 	async getUserForAccessToken(userId: string): Promise<User> {
 		const user = await this.userService.findOneByCondition({ id: userId });
-		if (!user)
+		if (!user) {
 			throw new BadRequestException({
 				detail: "User doesn't exist",
 				message: ERRORS_DICTIONARY.USER_NOT_FOUND,
 			});
+		}
 
 		const data = pick(user, ['id', 'email', 'username']) as User;
 

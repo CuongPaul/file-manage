@@ -1,5 +1,5 @@
-import { Module } from '@nestjs/common';
 import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
+import { Module, RequestMethod, MiddlewareConsumer } from '@nestjs/common';
 
 import { AppService } from './app.service';
 import { AppController } from './app.controller';
@@ -12,6 +12,8 @@ import { FolderModule } from '@modules/folder/folder.module';
 import { DatabaseModule } from './modules/database/database.module';
 import { TransformInterceptor } from '@interceptors/transform.interceptor';
 import { GlobalExceptionFilter } from '@exception-filters/global-exception.filter';
+import { BlackListAccessTokenMiddleware } from '@middleware/black-list-access-token.middleware';
+import { BlackListRefreshTokenMiddleware } from '@middleware/black-list-refresh-token.middleware';
 
 @Module({
 	imports: [
@@ -30,4 +32,15 @@ import { GlobalExceptionFilter } from '@exception-filters/global-exception.filte
 		{ provide: APP_INTERCEPTOR, useClass: TransformInterceptor },
 	],
 })
-export class AppModule {}
+export class AppModule {
+	configure(consumer: MiddlewareConsumer) {
+		consumer.apply(BlackListAccessTokenMiddleware).forRoutes({
+			method: RequestMethod.GET,
+			path: 'partner/confirm-pos-code',
+		});
+		consumer.apply(BlackListRefreshTokenMiddleware).forRoutes({
+			method: RequestMethod.GET,
+			path: 'employer/active-account',
+		});
+	}
+}

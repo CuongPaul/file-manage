@@ -22,6 +22,7 @@
 			"@modules/*": ["src/modules/*"],
 			"@swagger/*": ["src/swagger/*"],
 			"@decorators/*": ["src/decorators/*"],
+			"@middleware/*": ["src/middleware/*"],
 			"@services/*": ["src/shared/services/*"],
 			"@interceptors/*": ["src/interceptors/*"],
 			"@constants/*": ["src/shared/constants/*"],
