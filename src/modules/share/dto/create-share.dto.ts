@@ -7,7 +7,7 @@ import {
 	ArrayMinSize,
 } from 'class-validator';
 
-import { Permission } from '@constants/permissions.enum';
+import { PERMISSIONS } from '@constants/permissions.enum';
 
 export class CreateShareDto {
 	@IsOptional()
@@ -28,6 +28,6 @@ export class CreateShareDto {
 
 	@IsArray()
 	@ArrayMinSize(1)
-	@IsEnum(Permission, { each: true })
-	permissions: Permission[];
+	@IsEnum(PERMISSIONS, { each: true })
+	permissions: PERMISSIONS[];
 }

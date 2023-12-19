@@ -1,4 +1,4 @@
-import { Permission } from '@constants/permissions.enum';
+import { PERMISSIONS } from '@constants/permissions.enum';
 
 export interface IShare {
 	id: string;
@@ -6,5 +6,5 @@ export interface IShare {
 	file_id?: string;
 	folder_id?: string;
 	consumer_id?: string;
-	permissions: Permission[];
+	permissions: PERMISSIONS[];
 }

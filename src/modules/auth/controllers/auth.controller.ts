@@ -3,6 +3,7 @@ import { Req, Body, Post, UseGuards, Controller } from '@nestjs/common';
 import { SignUpDto } from '../dto/sign-up.dto';
 import { AuthService } from '../services/auth.service';
 import { LocalAuthGuard } from '@guards/local-auth.guard';
+import { JwtRefreshTokenGuard } from '@guards/jwt-refresh-token.guard';
 import { IRequestWithUser } from '../interfaces/request-with-user.interface';
 
 @Controller('auth')
@@ -17,8 +18,14 @@ export class AuthController {
 	@UseGuards(LocalAuthGuard)
 	@Post('sign-in')
 	signIn(@Req() request: IRequestWithUser) {
-		const { user } = request;
+		return this.authService.signIn(request.user.id);
+	}
 
-		return this.authService.signIn(user.id);
+	@UseGuards(JwtRefreshTokenGuard)
+	@Post('refresh-access-token')
+	refreshAccessToken(@Req() request: IRequestWithUser) {
+		return this.authService.generateAccessToken({
+			user_id: request.user.id,
+		});
 	}
 }

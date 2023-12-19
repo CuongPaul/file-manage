@@ -13,7 +13,7 @@ import {
 import User from '@modules/user/models/user.model';
 import File from '@modules/file/models/file.model';
 import Folder from '@modules/folder/models/folder.model';
-import { Permission } from '@constants/permissions.enum';
+import { PERMISSIONS } from '@constants/permissions.enum';
 
 @Table({
 	tableName: 'share',
@@ -46,7 +46,7 @@ export default class Share extends Model {
 
 	@AllowNull(false)
 	@Column({ type: DataType.ARRAY(DataType.STRING) })
-	permissions: Permission[];
+	permissions: PERMISSIONS[];
 
 	@BelongsTo(() => User)
 	user: User;

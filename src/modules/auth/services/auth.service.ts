@@ -1,8 +1,10 @@
 import {
 	Injectable,
 	ConflictException,
+	NotFoundException,
 	BadRequestException,
 } from '@nestjs/common';
+import { pick } from 'lodash';
 import * as bcrypt from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
@@ -10,6 +12,8 @@ import { ConfigService } from '@nestjs/config';
 import { SignUpDto } from '../dto/sign-up.dto';
 import User from '@modules/user/models/user.model';
 import { UserService } from '@modules/user/services/user.service';
+import { ERRORS_DICTIONARY } from '@constants/error-dictionary.enum';
+import { ITokenPayload } from '../interfaces/token-payload.interface';
 
 @Injectable()
 export class AuthService {
@@ -21,7 +25,7 @@ export class AuthService {
 		private readonly configService: ConfigService,
 	) {}
 
-	async signUp(signUpDto: SignUpDto): Promise<void> {
+	async signUp(signUpDto: SignUpDto): Promise<User> {
 		const { email, password } = signUpDto;
 
 		const existedEmail = await this.userService.findOneByCondition({ email });
@@ -30,37 +34,32 @@ export class AuthService {
 		}
 
 		const hashedPassword = await bcrypt.hash(password, this.SALT_ROUND);
-		await this.userService.create({
+
+		const user = await this.userService.create({
 			...signUpDto,
 			password: hashedPassword,
 		});
+		const data = pick(user, ['id', 'email', 'username']) as User;
+
+		return data;
 	}
 
 	async signIn(
 		userId: string,
 	): Promise<{ access_token: string; refresh_token: string }> {
-		const accessToken = this.jwtService.sign(
-			{ user_id: userId },
-			{
-				secret: this.configService.get('JWT_ACCESS_TOKEN_SECRET_KEY'),
-				expiresIn: this.configService.get('JWT_ACCESS_TOKEN_EXPIRATION_TIME'),
-			},
-		);
-		const refreshToken = this.jwtService.sign(
-			{ user_id: userId },
-			{
-				secret: this.configService.get('JWT_REFRESH_TOKEN_SECRET_KEY'),
-				expiresIn: this.configService.get('JWT_REFRESH_TOKEN_EXPIRATION_TIME'),
-			},
-		);
+		const accessToken = this.generateAccessToken({ user_id: userId });
+		const refreshToken = this.generateRefreshToken({ user_id: userId });
 
 		const hashedRefreshToken = await bcrypt.hash(refreshToken, this.SALT_ROUND);
-		await this.userService.setRefreshToken(userId, hashedRefreshToken);
+
+		await this.userService.update(userId, {
+			refresh_token: hashedRefreshToken,
+		});
 
 		return { access_token: accessToken, refresh_token: refreshToken };
 	}
 
-	async getAuthenticatedUser({
+	async getUserAuthenticated({
 		email,
 		password,
 	}: {
@@ -68,15 +67,74 @@ export class AuthService {
 		password: string;
 	}): Promise<User> {
 		const user = await this.userService.findOneByCondition({ email });
-		if (!user) {
-			throw new BadRequestException('Thông tin đăng nhập không chính xác!');
-		}
+		if (!user) throw new NotFoundException();
 
-		const isMatchingPassword = await bcrypt.compare(password, user.password);
-		if (!isMatchingPassword) {
-			throw new BadRequestException('Thông tin đăng nhập không chính xác!');
-		}
+		await this.verifyPlainContentWithHashedContent({
+			plainText: password,
+			hashedText: user.password,
+		});
 
-		return user;
+		const data = pick(user, ['id', 'email', 'username']) as User;
+
+		return data;
+	}
+
+	async getUserForAccessToken(userId: string): Promise<User> {
+		const user = await this.userService.findOneByCondition({ id: userId });
+		if (!user)
+			throw new BadRequestException({
+				detail: "User doesn't exist",
+				message: ERRORS_DICTIONARY.USER_NOT_FOUND,
+			});
+
+		const data = pick(user, ['id', 'email', 'username']) as User;
+
+		return data;
+	}
+
+	async getUserForRefreshToken({
+		userId,
+		refreshToken,
+	}: {
+		userId: string;
+		refreshToken: string;
+	}): Promise<User> {
+		const user = await this.userService.findOneByCondition({ id: userId });
+		if (!user) throw new NotFoundException();
+
+		await this.verifyPlainContentWithHashedContent({
+			plainText: refreshToken,
+			hashedText: user.refresh_token,
+		});
+
+		const data = pick(user, ['id', 'email', 'username']) as User;
+
+		return data;
+	}
+
+	private async verifyPlainContentWithHashedContent({
+		plainText,
+		hashedText,
+	}: {
+		plainText: string;
+		hashedText: string;
+	}) {
+		const isMatching = await bcrypt.compare(plainText, hashedText);
+
+		if (!isMatching) throw new BadRequestException();
+	}
+
+	generateAccessToken(payload: ITokenPayload) {
+		return this.jwtService.sign(payload, {
+			secret: this.configService.get('JWT_ACCESS_TOKEN_SECRET_KEY'),
+			expiresIn: this.configService.get('JWT_ACCESS_TOKEN_EXPIRATION_TIME'),
+		});
+	}
+
+	generateRefreshToken(payload: ITokenPayload) {
+		return this.jwtService.sign(payload, {
+			secret: this.configService.get('JWT_REFRESH_TOKEN_SECRET_KEY'),
+			expiresIn: this.configService.get('JWT_REFRESH_TOKEN_EXPIRATION_TIME'),
+		});
 	}
 }
