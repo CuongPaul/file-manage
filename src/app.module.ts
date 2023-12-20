@@ -1,5 +1,6 @@
+import { Module } from '@nestjs/common';
+import { CacheModule } from '@nestjs/cache-manager';
 import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
-import { Module, RequestMethod, MiddlewareConsumer } from '@nestjs/common';
 
 import { AppService } from './app.service';
 import { AppController } from './app.controller';
@@ -12,8 +13,8 @@ import { FolderModule } from '@modules/folder/folder.module';
 import { DatabaseModule } from './modules/database/database.module';
 import { TransformInterceptor } from '@interceptors/transform.interceptor';
 import { GlobalExceptionFilter } from '@exception-filters/global-exception.filter';
-import { BlackListAccessTokenMiddleware } from '@middleware/black-list-access-token.middleware';
-import { BlackListRefreshTokenMiddleware } from '@middleware/black-list-refresh-token.middleware';
+// import { BlackListAccessTokenMiddleware } from '@middleware/black-list-access-token.middleware';
+// import { BlackListRefreshTokenMiddleware } from '@middleware/black-list-refresh-token.middleware';
 
 @Module({
 	imports: [
@@ -24,6 +25,7 @@ import { BlackListRefreshTokenMiddleware } from '@middleware/black-list-refresh-
 		FolderModule,
 		EnvModule.register(),
 		DatabaseModule.register(),
+		CacheModule.register({ isGlobal: true }),
 	],
 	controllers: [AppController],
 	providers: [
@@ -33,14 +35,11 @@ import { BlackListRefreshTokenMiddleware } from '@middleware/black-list-refresh-
 	],
 })
 export class AppModule {
-	configure(consumer: MiddlewareConsumer) {
-		consumer.apply(BlackListAccessTokenMiddleware).forRoutes({
-			method: RequestMethod.GET,
-			path: 'partner/confirm-pos-code',
-		});
-		consumer.apply(BlackListRefreshTokenMiddleware).forRoutes({
-			method: RequestMethod.GET,
-			path: 'employer/active-account',
-		});
-	}
+	// configure(consumer: MiddlewareConsumer) {
+	// 	consumer.apply(BlackListAccessTokenMiddleware);
+	// 	consumer.apply(BlackListRefreshTokenMiddleware).forRoutes({
+	// 		method: RequestMethod.GET,
+	// 		path: 'auth/refresh-access-token',
+	// 	});
+	// }
 }

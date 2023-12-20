@@ -17,11 +17,11 @@ export class BlackListRefreshTokenMiddleware implements NestMiddleware {
 	) {}
 
 	async use(req: Request, _res: Response, next: NextFunction) {
-		const token = req.headers.authorization;
+		const refreshToken = req.headers.authorization.split('Bearer ')[1];
 
-		if (token) {
+		if (refreshToken) {
 			const isBlackList = await this.cacheManager.get(
-				`black_list_refresh_token:${token}`,
+				`black_list_refresh_token: ${refreshToken}`,
 			);
 
 			if (isBlackList) {

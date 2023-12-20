@@ -80,12 +80,12 @@ export class AuthService {
 		}
 
 		await this.cacheManager.set(
-			`black_list_access_token:Bearer ${accessToken}`,
+			`black_list_access_token: ${accessToken}`,
 			userId,
 			0,
 		);
 		await this.cacheManager.set(
-			`black_list_refresh_token:Bearer ${user.refresh_token}`,
+			`black_list_refresh_token: ${user.refresh_token}`,
 			userId,
 			0,
 		);

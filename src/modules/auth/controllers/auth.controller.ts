@@ -1,4 +1,4 @@
-import { Req, Body, Post, UseGuards, Controller } from '@nestjs/common';
+import { Get, Req, Body, Post, UseGuards, Controller } from '@nestjs/common';
 
 import { SignUpDto } from '../dto/sign-up.dto';
 import { AuthService } from '../services/auth.service';
@@ -32,7 +32,7 @@ export class AuthController {
 	}
 
 	@UseGuards(JwtRefreshTokenGuard)
-	@Post('refresh-access-token')
+	@Get('refresh-access-token')
 	refreshAccessToken(@Req() request: IRequestWithUser) {
 		return this.authService.generateAccessToken({
 			user_id: request.user.id,
